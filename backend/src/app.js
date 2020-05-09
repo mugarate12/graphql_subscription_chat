@@ -3,12 +3,19 @@ const { createServer } = require('http')
 const cors = require('cors')
 const { importSchema } = require('graphql-import')
 const { ApolloServer } = require('apollo-server-express')
+const connection = require('./database/connection')
 
 const PORT = process.env.PORT || 3333
 const typeDefs = importSchema(__dirname + '/graphql/schema/index.graphql')
 const resolvers = require('./graphql/resolvers/index')
 
-const server = new ApolloServer({ typeDefs, resolvers })
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => {
+    return { connection }
+  }
+})
 const app = express()
 
 app.use(cors())

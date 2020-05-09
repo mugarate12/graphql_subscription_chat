@@ -1,5 +1,5 @@
-const example = require('./example.query')
+const user = require('./user.query')
 
 module.exports = {
-  ...example
+  ...user
 }

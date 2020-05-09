@@ -15,11 +15,13 @@
   "dependencies": {
     "apollo-server": "^2.12.0",
     "apollo-server-express": "^2.12.0",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql": "^15.0.0",
     "graphql-import": "^1.0.2",
     "graphql-tools": "^5.0.0",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.1",
     "mysql2": "^2.1.0"
   },

@@ -1,6 +1,7 @@
 const { graphql } = require('graphql')
 const { makeExecutableSchema } = require('graphql-tools')
 const { importSchema } = require('graphql-import')
+const connection = require('./../database/connection')
 
 const typeDefs = importSchema(__dirname + './../graphql/schema/index.graphql')
 const resolvers = require('./../graphql/resolvers/index')
@@ -18,6 +19,7 @@ module.exports = async (query, variables, userId) => {
       //     userId
       //   }
       // },
+      connection,
       res: {
         clearCookie: () => {}
       }
