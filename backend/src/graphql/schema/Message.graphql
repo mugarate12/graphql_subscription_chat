@@ -1,0 +1,9 @@
+type Message {
+  id: Int!
+  content: String!
+  author: String!
+}
+
+input newMessageInput {
+  contet: String!
+}
