@@ -8,17 +8,13 @@ const resolvers = require('./../graphql/resolvers/index')
 const schema = makeExecutableSchema({ typeDefs, resolvers })
 
 // ver se esse user Id é necessário
-module.exports = async (query, variables, userId) => {
+module.exports = async (query, variables, authToken = '') => {
   return graphql (
     schema,
     query,
     undefined,
     {
-      // req: {
-      //   session: {
-      //     userId
-      //   }
-      // },
+      authToken,
       connection,
       res: {
         clearCookie: () => {}

@@ -1,6 +1,6 @@
 const express = require('express')
-const { createServer } = require('http')
 const cors = require('cors')
+const { createServer } = require('http')
 const { importSchema } = require('graphql-import')
 const { ApolloServer } = require('apollo-server-express')
 const connection = require('./database/connection')
@@ -13,7 +13,11 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => {
-    return { connection }
+    const authToken = req.headers.authorization || ''
+    return {
+      connection,
+      authToken
+    }
   }
 })
 const app = express()

@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const { handleError, throwError } = require('./../../../utils/utils')
+const { verifyToken, validateToken } = require('./../../../middlewares/verifyToken')
 const createToken = require('./../../../utils/createToken')
 const USERTABLENAME = 'users'
 
@@ -18,6 +19,19 @@ module.exports = {
         const token = createToken(user)
         return { token }
       })
+      .catch(handleError)
+  },
+  searchUser: async (parent, { username }, { connection, authToken }, info) => {
+    const authUser = await verifyToken(authToken)
+    validateToken(authUser)
+
+    return await connection(USERTABLENAME)
+      .select('*')
+      .where({
+        username
+      })
+      .first()
+      .then(user => user)
       .catch(handleError)
   }
 }

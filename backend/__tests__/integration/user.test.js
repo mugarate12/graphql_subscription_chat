@@ -7,6 +7,7 @@ describe('users case', () => {
     username: "matt_cardoso",
     password: "majuge123"
   }
+  let token
 
   it('should create a new user', async () => {
     const createUserMutation = `
@@ -45,7 +46,7 @@ describe('users case', () => {
       }
     `
 
-    const token = await graphqlTestCall(loginUserQuery, {
+    const loginUserRequestSucess = await graphqlTestCall(loginUserQuery, {
       username: user.username,
       password: user.password
     })
@@ -58,8 +59,35 @@ describe('users case', () => {
       username: "oraoraora"
     })
     
-    expect(token.data.loginUser).toEqual({ token: expect.any(String) })
+    expect(loginUserRequestSucess.data.loginUser).toEqual({ token: expect.any(String) })
     loginUserRequestError.errors.map(error => expect(error).toBeDefined())
     usernameNotValid.errors.map(error => expect(error).toBeDefined())
+
+    token = `Bearer ${loginUserRequestSucess.data.loginUser.token}`
+  })
+
+  it('should search user by username', async () => {
+    const searchUserByUsernameQuery = `
+      query Search($username: String!){
+        searchUser(username: $username){
+          id
+          username
+          name
+        }
+      }
+    `
+
+    const searchUserRequestSucess = await graphqlTestCall(searchUserByUsernameQuery, {
+      username: user.username
+    }, token)
+    const searchUserRequestError = await graphqlTestCall(searchUserByUsernameQuery, {}, token)
+    const serachUserRequestWithoutToken = await graphqlTestCall(searchUserByUsernameQuery, {
+      username: user.username
+    })
+
+    expect(searchUserRequestSucess.data.searchUser).toBeDefined()
+    expect(searchUserRequestSucess.data.searchUser.username).toBe(user.username)
+    searchUserRequestError.errors.map(error => expect(error).toBeDefined())
+    serachUserRequestWithoutToken.errors.map(error => expect(error).toBeDefined())
   })
 })
