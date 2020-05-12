@@ -10,8 +10,8 @@ module.exports = {
     const authUser = await verifyToken(authToken)
     validateToken(authUser)
 
-    let fiels = graphqlFields(info)
-    fiels = fiels.filter(field => field !== 'author')
+    let fields = graphqlFields(info)
+    fields = fields.filter(field => field !== 'author')
 
     const contact = await connection(USER_TABLE_NAME)
       .select('id')
@@ -23,7 +23,7 @@ module.exports = {
     throwError(!contact, "contato não encontrado, por favor, verificar informações")
 
     return await connection(MESSAGE_TABLE_NAME)
-      .select([...fiels, 'authorFK'])
+      .select([...fields, 'authorFK'])
       .where({
         authorFK: authUser.userID,
         contactFK: contact.id
