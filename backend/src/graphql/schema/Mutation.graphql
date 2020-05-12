@@ -1,5 +1,5 @@
 type Mutation {
-  addMessage(content: String): Message
-
   createUser(username: String!, password: String!, name: String): Boolean!
+  
+  addMessage(content: String, toUser: String!): Boolean!
 }

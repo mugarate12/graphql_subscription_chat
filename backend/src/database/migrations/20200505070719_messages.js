@@ -3,9 +3,11 @@ exports.up = function(knex) {
     table.increments()
 
     table.string('content').notNullable()
-    table.integer('userIDFK').unsigned()
+    table.integer('authorFK').unsigned()
+    table.integer('contactFK').unsigned()
 
-    table.foreign('userIDFK').references('id').inTable('users')
+    table.foreign('authorFK').references('id').inTable('users')
+    table.foreign('contactFK').references('id').inTable('users')
   })
 }
 

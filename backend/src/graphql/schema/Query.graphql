@@ -1,6 +1,7 @@
 type Query {
-  messages(contact: String!): [Message]
-
   loginUser(username: String!, password: String!): Token
   searchUser(username: String!): User
+  
+  messages(contact: String!): [Message]
+  conversation(contactUsername: String!): [Message]
 }

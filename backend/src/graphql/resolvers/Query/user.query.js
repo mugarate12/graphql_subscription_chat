@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const { handleError, throwError } = require('./../../../utils/utils')
 const { verifyToken, validateToken } = require('./../../../middlewares/verifyToken')
+const { graphqlFields } = require('./../../../utils/graphqlUtils')
 const createToken = require('./../../../utils/createToken')
 const USERTABLENAME = 'users'
 
@@ -22,6 +23,8 @@ module.exports = {
       .catch(handleError)
   },
   searchUser: async (parent, { username }, { connection, authToken }, info) => {
+    const fields = graphqlFields(info)
+
     const authUser = await verifyToken(authToken)
     validateToken(authUser)
 

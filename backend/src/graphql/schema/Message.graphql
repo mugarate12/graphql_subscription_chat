@@ -1,9 +1,10 @@
 type Message {
   id: Int!
   content: String!
-  author: String!
+  author: User!
 }
 
 input newMessageInput {
   contet: String!
+  toUser: String!
 }

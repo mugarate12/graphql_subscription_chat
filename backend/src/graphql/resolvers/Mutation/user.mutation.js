@@ -1,6 +1,6 @@
 const { handleError } = require('./../../../utils/utils')
 const createHashPassword = require('./../../../utils/createHashPassword')
-const USERTABLENAME = 'users'
+const USER_TABLE_NAME = 'users'
 
 module.exports = {
   createUser: async (parent, { username, password, name = '' }, { connection }, info) => {
@@ -8,7 +8,7 @@ module.exports = {
     name = name === '' ? username : name
     password = await createHashPassword(password)
 
-    return await connection(USERTABLENAME)
+    return await connection(USER_TABLE_NAME)
       .insert({ username, password, name })
       .then((user) => true)
       .catch(handleError)
