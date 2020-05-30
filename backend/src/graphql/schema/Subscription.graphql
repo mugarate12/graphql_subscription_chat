@@ -1,3 +1,3 @@
 type Subscription {
-  messageAdded: Message
+  messageAdded(contact: String!): Message
 }

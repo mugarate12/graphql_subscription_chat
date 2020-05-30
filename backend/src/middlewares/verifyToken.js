@@ -15,6 +15,7 @@ const verifyToken = async (authToken) => {
     let authUser = {}
     authUser.userID = decoded.id
     authUser.username = decoded.username
+    authUser.name = decoded.name
     
     return authUser
   } catch (error) {

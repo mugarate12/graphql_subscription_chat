@@ -1,5 +1,6 @@
 type Mutation {
   createUser(username: String!, password: String!, name: String): Boolean!
   
+  # passe o token no header authorization "Bearer Token"
   addMessage(content: String, toUser: String!): Boolean!
 }

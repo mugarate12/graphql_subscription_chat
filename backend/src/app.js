@@ -5,6 +5,8 @@ const { importSchema } = require('graphql-import')
 const { ApolloServer } = require('apollo-server-express')
 const connection = require('./database/connection')
 
+const { verifyToken, validateToken } = require('./middlewares/verifyToken')
+
 const PORT = process.env.PORT || 3333
 const typeDefs = importSchema(__dirname + '/graphql/schema/index.graphql')
 const resolvers = require('./graphql/resolvers/index')
@@ -12,11 +14,27 @@ const resolvers = require('./graphql/resolvers/index')
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
-    const authToken = req.headers.authorization || ''
-    return {
-      connection,
-      authToken
+  context: async ({ req }) => {
+    if (req) {
+      const authToken =  req.headers.authorization || ''
+      return {
+        connection,
+        authToken
+      }
+    } else {
+      const authToken = ''
+      return {
+        connection,
+        authToken
+      }
+    }
+  },
+  subscriptions: {
+    onConnect: async (connectionParams, webSocket, context) => {
+      const authUser = await verifyToken(connectionParams.Authorization)
+      validateToken(authUser)
+      
+      return 
     }
   }
 })

@@ -1,7 +1,10 @@
 type Query {
   loginUser(username: String!, password: String!): Token
+  # passe o token no header authorization "Bearer Token"
   searchUser(username: String!): User
   
+  # passe o token no header authorization "Bearer Token"
   messages(contact: String!): [Message]
+  # passe o token no header authorization "Bearer Token"
   conversation(contactUsername: String!): [Message]
 }

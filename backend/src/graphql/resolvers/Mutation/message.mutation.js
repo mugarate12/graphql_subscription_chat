@@ -12,7 +12,7 @@ module.exports = {
     validateToken(authUser)
 
     const user = await connection(USER_TABLE_NAME)
-      .select('id')
+      .select('id', 'username')
       .where({
         username: toUser
       })
@@ -26,9 +26,10 @@ module.exports = {
         authorFK: authUser.userID,
         contactFK: user.id
       })
-      .then(messageID => {
+      .then(async messageID => {
+        messageID = messageID[0]
         // essa call pro pubsub é provisoria
-        pubsub.publish(MESSAGE_ADDED, {
+        await pubsub.publish(MESSAGE_ADDED, {
           messageAdded: {
             id: messageID,
             content,
@@ -36,7 +37,8 @@ module.exports = {
               id: authUser.userID,
               username: authUser.username,
               name:authUser.name
-            }
+            },
+            contactUsername: user.username
           }
         })
 
